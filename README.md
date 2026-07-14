@@ -18,7 +18,7 @@ Many households consume electricity inefficiently because future energy usage ca
 
 **Source:** Kaggle
 
-**Dataset Link:** https://www.kaggle.com/datasets/loveall/appliances-energy-predictions
+**Dataset Link:**[ https://www.kaggle.com/datasets/loveall/appliances-energy-predictions](https://www.kaggle.com/code/gaganmaahi224/appliances-energy-time-series-analysis/input)
 
 **Dataset Information**
 
@@ -42,8 +42,7 @@ Energy-Consumption-Prediction-ML/
 │   └── energy_preprocessed.csv
 │
 ├── reports/
-│   └── One_Page_Report.pdf
-│
+│   └── One_Page_ReportOne_Page_Report_Dataset_Selection_and_Preprocessing.pdf
 └── README.md
 ```
 
