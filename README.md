@@ -6,13 +6,17 @@ This project predicts household appliance energy consumption using machine learn
 
 The project follows a complete machine learning workflow consisting of:
 
-* Dataset selection and preprocessing
-* Feature engineering
-* Exploratory Data Analysis (EDA)
-* Regression model training
-* Model evaluation and comparison
-* Cross-validation
-* Final model selection
+The project follows a complete machine learning workflow consisting of:
+
+- Dataset selection and preprocessing
+- Feature engineering
+- Exploratory Data Analysis (EDA)
+- Regression model training
+- Model evaluation and comparison
+- Cross-validation
+- Final model selection
+- Model serialization using Joblib
+- Deployment-ready Streamlit application
 
 ---
 
@@ -192,39 +196,95 @@ The relatively low R² scores suggest that the current features explain only a l
 
 ---
 
+# Task 4: Deployment Preparation
+
+The fourth implementation phase focuses on transforming the trained machine learning model into a deployment-ready application.
+
+The notebook implementation was converted into reusable Python modules following a clean and modular project structure.
+
+### Python Modules
+
+The project was organized into the following modules:
+
+- **preprocess.py** – Data preprocessing pipeline
+- **feature_engineering.py** – Feature engineering functions
+- **train_model.py** – Model training and serialization
+- **model_loader.py** – Loads the saved model
+- **prediction.py** – Prediction pipeline
+- **app.py** – Streamlit web application
+
+### Model Serialization
+
+The best-performing **Lasso Regression** model was serialized using **Joblib**.
+
+Instead of retraining the model each time, the application loads the saved model from:
+
+```text
+models/energy_model.joblib
+```
+
+This significantly reduces application startup time and makes the project deployment-ready.
+
+### Streamlit Application
+
+A simple Streamlit web application was developed to demonstrate the deployment workflow.
+
+The application allows users to:
+
+- Enter feature values
+- Load the trained model
+- Predict household appliance energy consumption instantly
+
+This demonstrates the complete prediction pipeline and serves as the initial deployment interface.
+
 ## Project Structure
 
 ```text
-AI-Powered-Smart-Energy-Consumption-Prediction/
+Smart-Energy-Consumption-Prediction/
+│
+├── app/
+│   ├── __init__.py
+│   ├── app.py
+│   ├── preprocess.py
+│   ├── feature_engineering.py
+│   ├── model_loader.py
+│   └── prediction.py
+│
+├── data/
+│   ├── energydata_complete.csv
+│   └── energy_preprocessed.csv
+│
+├── models/
+│   └── energy_model.joblib
 │
 ├── notebooks/
 │   ├── Task_1_Dataset_Selection_and_Preprocessing.ipynb
 │   ├── Task_2_Feature_Engineering_and_EDA.ipynb
 │   └── Task_3_Model_Training_and_Evaluation.ipynb
 │
-├── data/
-│   ├── energydata_complete.csv
-│   └── energy_preprocessed.csv
-│
 ├── reports/
 │   └── One_Page_Report_Dataset_Selection_and_Preprocessing.pdf
 │
-└── README.md
+├── train_model.py
+├── requirements.txt
+├── LICENSE
+├── README.md
+└── .gitignore
 ```
-
----
 
 ## Technologies and Libraries Used
 
-* Python
-* Pandas
-* NumPy
-* Matplotlib
-* Seaborn
-* Scikit-learn
-* Jupyter Notebook
-* Git
-* GitHub
+- Python
+- Pandas
+- NumPy
+- Matplotlib
+- Seaborn
+- Scikit-learn
+- Joblib
+- Streamlit
+- Jupyter Notebook
+- Git
+- GitHub
 
 ---
 
@@ -233,63 +293,88 @@ AI-Powered-Smart-Energy-Consumption-Prediction/
 Clone the repository:
 
 ```bash
-git clone (https://github.com/SaribShahid/Smart-Energy-Consumption-Prediction.git)
+git clone https://github.com/SaribShahid/Smart-Energy-Consumption-Prediction.git
 ```
 
 Move into the project directory:
 
 ```bash
-cd AI-Powered-Smart-Energy-Consumption-Prediction
+cd Smart-Energy-Consumption-Prediction
 ```
 
-Install the required libraries:
+Install the required dependencies:
 
 ```bash
-pip install pandas numpy matplotlib seaborn scikit-learn jupyter
+pip install -r requirements.txt
 ```
 
 ---
 
 ## How to Run
 
-1. Clone or download the repository.
-2. Install the required Python libraries.
-3. Open the project folder in **Jupyter Notebook**, **Google Colab**, or **Visual Studio Code**.
-4. Run the notebooks in the following order:
+### Step 1: Clone the repository
 
-```text
-1. Task_1_Dataset_Selection_and_Preprocessing.ipynb
-2. Task_2_Feature_Engineering_and_EDA.ipynb
-3. Task_3_Model_Training_and_Evaluation.ipynb
+```bash
+git clone https://github.com/SaribShahid/Smart-Energy-Consumption-Prediction.git
 ```
 
-5. Run each notebook from top to bottom.
+### Step 2: Navigate to the project
 
-> Make sure that `energy_preprocessed.csv` is available in the `data/` folder before running the Task 2 and Task 3 notebooks.
+```bash
+cd Smart-Energy-Consumption-Prediction
+```
+
+### Step 3: Install dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### Step 4: Train the model
+
+```bash
+py train_model.py
+```
+
+This creates:
+
+```text
+models/energy_model.joblib
+```
+
+### Step 5: Launch the Streamlit application
+
+```bash
+py -m streamlit run app/app.py
+```
+
+The application opens in your browser where users can enter feature values and obtain appliance energy consumption predictions.
 
 ---
-
 ## Repository Contents
 
-* **notebooks/** – Contains notebooks for preprocessing, feature engineering, EDA, model training, and evaluation.
-* **data/** – Contains the original and preprocessed datasets.
-* **reports/** – Contains project reports.
-* **README.md** – Contains project documentation, methodology, results, and execution instructions.
+- **app/** – Streamlit application and prediction modules.
+- **data/** – Original and preprocessed datasets.
+- **models/** – Serialized trained machine learning model.
+- **notebooks/** – Original implementation notebooks.
+- **reports/** – Project reports and documentation.
+- **train_model.py** – Model training and model serialization script.
+- **requirements.txt** – Project dependencies.
+- **README.md** – Complete project documentation.
+- **LICENSE** – MIT License.
+- **.gitignore** – Git ignore configuration.
 
 ---
 
 ## Future Improvements
 
-Possible improvements include:
-
-* Hyperparameter tuning using `GridSearchCV` or `RandomizedSearchCV`
-* Adding more relevant features
-* Performing additional feature selection
-* Testing Random Forest Regressor
-* Testing Gradient Boosting Regressor
-* Improving prediction accuracy through advanced feature engineering
-* Deploying the trained model as a web application or REST API
-* Creating an interactive dashboard for energy consumption predictions
+- Improve feature engineering for higher prediction accuracy.
+- Perform hyperparameter tuning using GridSearchCV or RandomizedSearchCV.
+- Evaluate advanced regression models such as Random Forest, XGBoost, and Gradient Boosting.
+- Deploy the application on Streamlit Community Cloud.
+- Develop a REST API using FastAPI.
+- Support batch prediction using CSV file uploads.
+- Add interactive visualizations and energy consumption analytics.
 
 ---
 
