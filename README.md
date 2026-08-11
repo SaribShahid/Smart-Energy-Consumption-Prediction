@@ -6,8 +6,6 @@ This project predicts household appliance energy consumption using machine learn
 
 The project follows a complete machine learning workflow consisting of:
 
-The project follows a complete machine learning workflow consisting of:
-
 - Dataset selection and preprocessing
 - Feature engineering
 - Exploratory Data Analysis (EDA)
@@ -196,7 +194,7 @@ The relatively low R² scores suggest that the current features explain only a l
 
 ---
 
-# Task 4: Deployment Preparation
+## Task 4: Deployment Preparation
 
 The fourth implementation phase focuses on transforming the trained machine learning model into a deployment-ready application.
 
@@ -225,19 +223,165 @@ models/energy_model.joblib
 
 This significantly reduces application startup time and makes the project deployment-ready.
 
-### Streamlit Application
+### Streamlit Application (Initial Version)
 
 A simple Streamlit web application was developed to demonstrate the deployment workflow.
 
-The application allows users to:
+The initial application allowed users to:
 
 - Enter feature values
 - Load the trained model
 - Predict household appliance energy consumption instantly
 
-This demonstrates the complete prediction pipeline and serves as the initial deployment interface.
+This demonstrated the complete prediction pipeline and served as the initial deployment interface, which was later expanded in Task 5.
 
-## Project Structure
+---
+
+## Task 5: Complete Application and Deployment
+
+The final implementation phase focused on completing and demonstrating the fully deployed machine learning application.
+
+The trained model was integrated into a functional Streamlit web application that provides an end-to-end prediction system.
+
+### Complete Application
+
+The final application loads the serialized machine learning model and generates predictions based on user-provided input.
+
+The application does not retrain the model during prediction. Instead, it loads:
+
+```text
+models/energy_model.joblib
+```
+
+The application then processes the input data and passes it to the trained model to generate the predicted appliance energy consumption.
+
+### User Input Options
+
+The application provides multiple input methods so users can choose how they want to provide prediction data.
+
+**1. Manual Input**
+
+Users can manually enter the required feature values through the Streamlit interface. The application processes these values and generates the predicted appliance energy consumption.
+
+**2. CSV File Upload**
+
+Users can upload a CSV file containing the required input features. The application:
+
+- Accepts the uploaded CSV file
+- Reads the data using Pandas
+- Validates the required features
+- Passes the data to the trained model
+- Generates predictions
+- Displays the prediction results
+
+This allows users to perform predictions using prepared datasets instead of entering values manually.
+
+**3. Excel File Upload**
+
+The application also supports Excel files. Users can upload an `.xlsx` file containing the required input features. The application reads the Excel file, processes the input data, and generates predictions using the trained model. The Excel functionality uses the `openpyxl` library for reading `.xlsx` files.
+
+### Required Input Features
+
+The application accepts/requires the following features for prediction:
+
+```
+lights, T1, RH_1, T2, RH_2, T3, RH_3, T4, RH_4, T5, RH_5, T6, RH_6,
+T7, RH_7, T8, RH_8, T9, RH_9, T_out, Press_mm_hg, RH_out, Windspeed,
+Visibility, Tdewpoint, Year, Month, Day, Hour, Minute, DayOfWeek, IsWeekend
+```
+
+### Prediction Workflow
+
+```text
+User
+  │
+  ├── Manual Input
+  │
+  ├── CSV File
+  │
+  └── Excel File
+        │
+        ▼
+   Input Validation
+        │
+        ▼
+   Pandas DataFrame
+        │
+        ▼
+   Feature Preparation
+        │
+        ▼
+   Load Serialized Model
+        │
+        ▼
+   Lasso Regression Model
+        │
+        ▼
+   Generate Prediction
+        │
+        ▼
+   Display Energy Consumption
+```
+
+This demonstrates a complete end-to-end machine learning prediction system.
+
+### User Interface
+
+The Streamlit application provides separate sections/tabs for different input methods. Users can select the required input method without being required to use all input methods at the same time.
+
+The interface is designed to keep the prediction process simple:
+
+```text
+Manual Input                       CSV / Excel Upload
+     │                                    │
+     └── Enter values                     └── Upload file
+             │                                    │
+             ▼                                    ▼
+          Predict                           Validate Data
+             │                                    │
+             ▼                                    ▼
+      Prediction Result                     Predict
+                                                   │
+                                                   ▼
+                                          Prediction Results
+```
+
+This prevents users from becoming confused about which input method they should use.
+
+### Application Output
+
+The application displays the predicted appliance energy consumption after a successful prediction.
+
+Example:
+
+```text
+Predicted Energy Consumption: 17.52 Wh
+```
+
+For uploaded files containing multiple records, the application can generate predictions for all provided input rows.
+
+### Input Validation
+
+The application validates uploaded files before making predictions. It checks whether all required model features are available. If required columns are missing, the application informs the user instead of attempting to generate an invalid prediction.
+
+### Final Application Features
+
+The completed application provides:
+
+- Trained machine learning model integration
+- Serialized model loading using Joblib
+- Manual feature input
+- CSV file upload
+- Excel file upload
+- Input validation
+- Prediction generation
+- Prediction results display
+- Streamlit-based user interface
+- End-to-end machine learning workflow
+
+---
+
+## Final Project Structure
 
 ```text
 Smart-Energy-Consumption-Prediction/
@@ -272,6 +416,8 @@ Smart-Energy-Consumption-Prediction/
 └── .gitignore
 ```
 
+---
+
 ## Technologies and Libraries Used
 
 - Python
@@ -282,6 +428,7 @@ Smart-Energy-Consumption-Prediction/
 - Scikit-learn
 - Joblib
 - Streamlit
+- OpenPyXL
 - Jupyter Notebook
 - Git
 - GitHub
@@ -332,6 +479,8 @@ pip install -r requirements.txt
 
 ### Step 4: Train the model
 
+If the serialized model is not already available, run:
+
 ```bash
 py train_model.py
 ```
@@ -348,12 +497,30 @@ models/energy_model.joblib
 py -m streamlit run app/app.py
 ```
 
-The application opens in your browser where users can enter feature values and obtain appliance energy consumption predictions.
+The application will open in your browser. Users can then choose between manual input or CSV/Excel file upload and generate appliance energy consumption predictions.
 
 ---
+
+## Requirements
+
+The project dependencies are maintained in `requirements.txt`. The main dependencies include:
+
+```text
+pandas
+numpy
+scikit-learn
+joblib
+streamlit
+openpyxl
+matplotlib
+seaborn
+```
+
+---
+
 ## Repository Contents
 
-- **app/** – Streamlit application and prediction modules.
+- **app/** – Streamlit application and supporting prediction modules.
 - **data/** – Original and preprocessed datasets.
 - **models/** – Serialized trained machine learning model.
 - **notebooks/** – Original implementation notebooks.
@@ -373,8 +540,21 @@ The application opens in your browser where users can enter feature values and o
 - Evaluate advanced regression models such as Random Forest, XGBoost, and Gradient Boosting.
 - Deploy the application on Streamlit Community Cloud.
 - Develop a REST API using FastAPI.
-- Support batch prediction using CSV file uploads.
-- Add interactive visualizations and energy consumption analytics.
+- Add prediction history.
+- Add interactive energy consumption visualizations and analytics.
+- Add downloadable prediction results.
+- Add authentication for application users.
+- Add monitoring and logging for deployed predictions.
+
+---
+
+## Conclusion
+
+This project demonstrates a complete machine learning development lifecycle, from dataset preprocessing and exploratory analysis to model training, evaluation, serialization, and application deployment.
+
+The final Streamlit application provides users with multiple ways to provide prediction data — manual input, CSV upload, and Excel upload — and generates appliance energy consumption predictions using the trained Lasso Regression model.
+
+The project therefore demonstrates an end-to-end machine learning system that is structured, reusable, documented, and prepared for further deployment and enhancement.
 
 ---
 
